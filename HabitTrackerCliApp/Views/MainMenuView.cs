@@ -9,7 +9,6 @@ public class MainMenuView
     {
         ConsoleUtils.DisplayHeader("Habit Tracker Main Menu");
         var value = UserInteractionUtils.GetIntFromUser(DisplayOptions);
-        Console.WriteLine(value);
 
     }
 
