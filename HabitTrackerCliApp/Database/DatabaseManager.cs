@@ -1,40 +1,53 @@
-namespace HabitTrackerCliApp.Database;
-using Microsoft.Data.Sqlite;
-public class DatabaseManager
+namespace HabitTrackerCliApp.Database
 {
-    private string _connectionString = "Data Source=habits.db";
+    using Microsoft.Data.Sqlite;
+    using System;
 
-    public void InitializeDatabase()
+    public class DatabaseManager
     {
-        using (var connection = new SqliteConnection(_connectionString))
+        private const string ConnectionString = "Data Source=habits.db";
+
+        public void InitializeDatabase()
         {
-            connection.Open();
-
-            var createHabitsTable = @"
-                CREATE TABLE IF NOT EXISTS Habits (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Name TEXT NOT NULL,
-                    Description TEXT,
-                    CreationDate TEXT
-                )";
-
-            using (var command = new SqliteCommand(createHabitsTable, connection))
+            try
             {
-                command.ExecuteNonQuery();
+                using (var connection = new SqliteConnection(ConnectionString))
+                {
+                    connection.Open();
+
+                    var foreignKeyCommand = connection.CreateCommand();
+                    foreignKeyCommand.CommandText = "PRAGMA foreign_keys = ON;";
+                    foreignKeyCommand.ExecuteNonQuery();
+
+                    var command = connection.CreateCommand();
+                    command.CommandText = @"
+                        CREATE TABLE IF NOT EXISTS Habits (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Name TEXT NOT NULL,
+                            Description TEXT,
+                            CreationDate TEXT DEFAULT CURRENT_TIMESTAMP
+                        )";
+                    command.ExecuteNonQuery();
+                    
+                    Console.WriteLine("FIRST TABLE CREATION EXECUTED");
+
+                    command.CommandText = @"
+                        CREATE TABLE IF NOT EXISTS HabitLogs (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            HabitId INTEGER NOT NULL,
+                            DATE TEXT NOT NULL,
+                            DidComplete INTEGER NOT NULL,
+                            FOREIGN KEY (HabitId) REFERENCES Habits (Id)
+                        );";
+                    command.ExecuteNonQuery();
+                    
+                    Console.WriteLine("SECOND TABLE CREATION EXECUTED");
+
+                }
             }
-
-            var createHabitLogsTable = @"
-                CREATE TABLE IF NOT EXISTS HabitLogs (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    HabitId INTEGER NOT NULL,
-                    DATE TEXT NOT NULL,
-                    DidComplete BOOLEAN NOT NULL,
-                    FOREIGN KEY (HabitId) REFERENCES Habits (Id)
-                );";
-            
-            using (var command = new SqliteCommand(createHabitLogsTable, connection))
+            catch (Exception ex)
             {
-                command.ExecuteNonQuery();
+                Console.WriteLine($"An error occurred while initializing the database: {ex.Message}");
             }
         }
     }
