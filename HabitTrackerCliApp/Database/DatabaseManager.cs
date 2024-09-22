@@ -5,13 +5,13 @@ namespace HabitTrackerCliApp.Database
 
     public class DatabaseManager
     {
-        private const string ConnectionString = "Data Source=habits.db";
+        private readonly string _connectionString = "Data Source=habits.db";
 
         public void InitializeDatabase()
         {
             try
             {
-                using (var connection = new SqliteConnection(ConnectionString))
+                using (var connection = new SqliteConnection(_connectionString))
                 {
                     connection.Open();
 
