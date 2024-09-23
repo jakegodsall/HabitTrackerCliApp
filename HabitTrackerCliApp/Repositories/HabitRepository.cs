@@ -12,17 +12,36 @@ public class HabitRepository
         _connectionString = connectionString;
     }
 
-    public void GetAllHabits()
+    public List<Habit> GetAllHabits()
     {
+        var habits = new List<Habit>();
+        
         using (var connection = new SqliteConnection(_connectionString))
         {
             connection.Open();
 
             var command = connection.CreateCommand();
             command.CommandText = "SELECT Id, Name, Description, CreationDate FROM Habits";
-            
-            
+
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var habit = new Habit
+                {
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    Description = reader.GetString(2),
+                    CreationDate = reader.GetDateTime(3)
+                };
+                
+                habits.Add(habit);
+            }
+
+            reader.Close();
         }
+
+        return habits;
     }
 
     public void CreateHabit(Habit habit)
@@ -43,4 +62,35 @@ public class HabitRepository
             command.ExecuteNonQuery();
         }
     }
+
+    public Habit? GetHabitById(int id)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT Id, Name, Description, Habits.CreationDate FROM Habits WHERE Id = @id";
+
+            command.Parameters.AddWithValue("@id", id);
+
+            var reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new Habit
+                {
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    Description = reader.GetString(2),
+                    CreationDate = reader.GetDateTime(3)
+                };
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+    
 }
