@@ -111,6 +111,8 @@ public class HabitRepository
             command.Parameters.AddWithValue("@Name", habit.Name);
             command.Parameters.AddWithValue("@Description", habit.Description);
             command.Parameters.AddWithValue("@CreationDate", habit.CreationDate);
+
+            command.ExecuteNonQuery();
         }
     }
     
