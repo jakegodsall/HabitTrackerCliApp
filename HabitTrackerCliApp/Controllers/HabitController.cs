@@ -28,6 +28,7 @@ public class HabitController
         
         Console.WriteLine(habit);
 
-        // _habitRepository.CreateHabit();
+        _habitRepository.CreateHabit(habit);
+        Console.WriteLine("Habit persisted");
     }
 }
