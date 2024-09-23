@@ -23,6 +23,8 @@ namespace HabitTrackerCliApp
             habitRepository.CreateHabit(habit2);
             
             var habits = habitRepository.GetAllHabits();
+
+            habitRepository.DeleteHabitById(2);
             
             foreach (var habit in habits)
             {

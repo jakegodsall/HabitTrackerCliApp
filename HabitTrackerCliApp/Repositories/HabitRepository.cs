@@ -93,4 +93,20 @@ public class HabitRepository
         }
     }
     
+    public bool DeleteHabitById(int id)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM Habits WHERE id = @id";
+
+            command.Parameters.AddWithValue("@id", id);
+
+            var rowsEffected = command.ExecuteNonQuery();
+
+            return rowsEffected > 0;
+        }
+    }
 }
