@@ -92,6 +92,27 @@ public class HabitRepository
             }
         }
     }
+
+    public void UpdateHabitById(int id, Habit habit)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE Habits
+                SET Name = @Name,
+                    Description = @Description,
+                    CreationDate = @CreationDate
+                WHERE Id = @Id";
+
+            command.Parameters.AddWithValue("@Id", id);
+            command.Parameters.AddWithValue("@Name", habit.Name);
+            command.Parameters.AddWithValue("@Description", habit.Description);
+            command.Parameters.AddWithValue("@CreationDate", habit.CreationDate);
+        }
+    }
     
     public bool DeleteHabitById(int id)
     {
