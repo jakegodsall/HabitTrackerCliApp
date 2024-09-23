@@ -22,4 +22,23 @@ public static class UserInteractionUtils
 
         return number;
     }
+
+    public static string GetTextualInputFromUser(string field)
+    {
+        bool success;
+        string input;
+        do
+        {
+            Console.WriteLine($"Enter a value for {field}:");
+            input = Console.ReadLine();
+            success = !string.IsNullOrEmpty(input);
+
+            if (!success)
+            {
+                Console.WriteLine($"{StringUtils.CapitaliseString(field)} cannot be empty. Please enter a valid {field}:");
+            }
+        } while (!success);
+
+        return input;
+    }
 }

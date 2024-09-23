@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices.JavaScript;
+using HabitTrackerCliApp.Controllers;
+using HabitTrackerCliApp.Repositories;
 using HabitTrackerCliApp.Utils;
 
 namespace HabitTrackerCliApp.Views;
@@ -10,6 +12,22 @@ public class MainMenuView
         ConsoleUtils.DisplayHeader("Habit Tracker Main Menu");
         var value = UserInteractionUtils.GetIntFromUser(DisplayOptions);
 
+        var habitController = new HabitController(new HabitRepository("Data Source=habits.db"));
+        
+        switch (value)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                habitController.CreateHabit();
+                break;
+            case 4:
+                break;
+        }
     }
 
     private void DisplayOptions()

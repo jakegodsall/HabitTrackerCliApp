@@ -25,6 +25,6 @@ public class Habit
 
     public override string ToString()
     {
-        return Name;
+        return $"{{\n  \"Id\": {Id},\n  \"Name\": \"{Name}\",\n  \"Description\": \"{Description}\",\n  \"CreationDate\": \"{CreationDate:yyyy-MM-ddTHH:mm:ss}\" \n}}";
     }
 }
