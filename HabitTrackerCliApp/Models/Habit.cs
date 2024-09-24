@@ -16,7 +16,7 @@ public class Habit
         CreationDate = creationDate;
     }
 
-    public Habit(string name, string description, int day, int month, int year)
+    public Habit(string name, string description, int year, int month, int day)
     {
         Name = name;
         Description = description;
