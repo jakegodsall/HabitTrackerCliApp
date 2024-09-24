@@ -107,4 +107,19 @@ public class HabitLogRepository
 
         command.ExecuteNonQuery();
     }
+
+    public bool DeleteHabitLogById(int id)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "DELETE FROM HabitLogs WHERE id = @id";
+
+        command.Parameters.AddWithValue("@id", id);
+
+        var linesAffected = command.ExecuteNonQuery();
+
+        return linesAffected > 0;
+    }
 }
