@@ -12,6 +12,30 @@ public class HabitLogRepository
         _connectionString = connectionString;
     }
 
+    public List<HabitLog> GetAllHabitLogs()
+    {
+        var habitLogs = new List<HabitLog>();
+
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT Id, HabitId, DidComplete, Date FROM HabitLogs";
+
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            habitLogs.Add(new HabitLog(
+                reader.GetInt32(0),
+                reader.GetInt32(1),
+                reader.GetBoolean(2),
+                reader.GetDateTime(3)
+                ));
+        }
+
+        return habitLogs;
+    }
+
     public List<HabitLog> GetAllHabitLogsByHabitId(int habitId)
     {
         var habitLogs = new List<HabitLog>();
