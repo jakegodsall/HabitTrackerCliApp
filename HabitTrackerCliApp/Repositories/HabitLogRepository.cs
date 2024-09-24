@@ -61,7 +61,7 @@ public class HabitLogRepository
 
     public HabitLog? GetHabitLogById(int id)
     {
-        using var connection = new SqliteConnection(_connectionString)
+        using var connection = new SqliteConnection(_connectionString);
         connection.Open();
 
         var command = connection.CreateCommand();
@@ -86,5 +86,25 @@ public class HabitLogRepository
         {
             return null;
         }
+    }
+
+    public void UpdateHabitLogById(int id, HabitLog habitLog)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+            UPDATE HabitLogs
+            SET HabitId = @habitId,
+                DidComplete = @didComplete,
+                Date = @date
+            WHERE id = @id";
+
+        command.Parameters.AddWithValue("@habitId", habitLog.HabitId);
+        command.Parameters.AddWithValue("@didComplete", habitLog.DidComplete);
+        command.Parameters.AddWithValue("@date", habitLog.Date);
+
+        command.ExecuteNonQuery();
     }
 }
