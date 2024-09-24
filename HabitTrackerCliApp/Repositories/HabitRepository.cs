@@ -22,8 +22,8 @@ public class HabitRepository
         var command = connection.CreateCommand();
         command.CommandText = "SELECT Id, Name, Description, CreationDate FROM Habits";
 
-        var reader = command.ExecuteReader();
 
+        using var reader = command.ExecuteReader();
         while (reader.Read())
         {
             var habit = new Habit
@@ -36,8 +36,6 @@ public class HabitRepository
                 
             habits.Add(habit);
         }
-
-        reader.Close();
 
         return habits;
     }
@@ -69,8 +67,7 @@ public class HabitRepository
 
         command.Parameters.AddWithValue("@id", id);
 
-        var reader = command.ExecuteReader();
-
+        using var reader = command.ExecuteReader();
         if (reader.Read())
         {
             return new Habit
