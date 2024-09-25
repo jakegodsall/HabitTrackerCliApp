@@ -17,6 +17,8 @@ public class HabitController
     {
         ConsoleUtils.DisplayHeader("HABITS");
         PrintHabitList();
+        
+        Console.WriteLine("\nChoose a habit to view more information: ");
     }
 
     public void CreateHabit()

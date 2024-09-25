@@ -10,26 +10,34 @@ public class MainMenuView
     public void Run()
     {
         ConsoleUtils.DisplayHeader("Habit Tracker Main Menu");
-        var value = UserInteractionUtils.GetIntFromUser(DisplayOptions);
+        
 
         var habitController = new HabitController(new HabitRepository("Data Source=habits.db"));
-        
-        switch (value)
+
+        var value = -1;
+        do
         {
-            case 1:
-                habitController.ViewAllHabits();
-                break;
-            case 2:
-                break;
-            case 3:
-                habitController.CreateHabit();
-                break;
-            case 4:
-                habitController.DeleteHabit();
-                break;
-            case 5:
-                break;
-        }
+            value = UserInteractionUtils.GetIntFromUser(DisplayOptions);
+
+            switch (value)
+            {
+                case 1:
+                    habitController.ViewAllHabits();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    habitController.CreateHabit();
+                    break;
+                case 4:
+                    habitController.DeleteHabit();
+                    break;
+                case 5:
+                    Console.WriteLine("Goodbye.");
+                    break;
+            }
+        } while (value != 5);
+
     }
 
     private static void DisplayOptions()
