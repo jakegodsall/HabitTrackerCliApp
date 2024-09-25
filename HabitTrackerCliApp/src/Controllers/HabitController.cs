@@ -7,6 +7,7 @@ namespace HabitTrackerCliApp.Controllers;
 public class HabitController
 {
     private readonly HabitRepository _habitRepository;
+    private const string ERROR_MESSAGE = "Invalid selection. Please choose a valid habit";
 
     public HabitController(HabitRepository habitRepository)
     {
@@ -23,7 +24,7 @@ public class HabitController
 
     public void CreateHabit()
     {
-        ConsoleUtils.DisplayHeader("CREATE HEADER");
+        ConsoleUtils.DisplayHeader("CREATE HABIT");
 
         var name = UserInteractionUtils.GetTextualInputFromUser("name");
         var description = UserInteractionUtils.GetTextualInputFromUser("description");
@@ -38,13 +39,53 @@ public class HabitController
         Console.WriteLine(habit);
 
         _habitRepository.CreateHabit(habit);
-        Console.WriteLine("Habit persisted");
+    }
+
+    public void UpdateHabit()
+    {
+        ConsoleUtils.DisplayHeader("UPDATE A HABIT");
+        
+        Habit? selectedHabit;
+        do
+        {
+            selectedHabit = GetHabitFromList();
+            
+            if (selectedHabit == null)
+            {
+                Console.WriteLine(ERROR_MESSAGE);
+            }
+        } while (selectedHabit == null);
+        
+        var newName = UserInteractionUtils.GetTextualInputFromUser("new name");
+        var newDescription = UserInteractionUtils.GetTextualInputFromUser("new description");
+
+        _habitRepository.UpdateHabitById(selectedHabit.Id, new Habit()
+        {
+            Name = newName,
+            Description = newDescription
+        });
     }
 
     public void DeleteHabit()
     {
         ConsoleUtils.DisplayHeader("DELETE A HABIT");
+        
+        Habit? selectedHabit;
+        do
+        {
+            selectedHabit = GetHabitFromList();
 
+            if (selectedHabit == null)
+            {
+                Console.WriteLine(ERROR_MESSAGE);
+            }
+        } while (selectedHabit == null);
+        
+        _habitRepository.DeleteHabitById(selectedHabit.Id);
+    }
+
+    private Habit? GetHabitFromList()
+    {
         var habits = _habitRepository.GetAllHabits();
 
         var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList) - 1;
@@ -52,11 +93,12 @@ public class HabitController
         if (selectedValue > 0 && selectedValue <= habits.Count)
         {
             var selectedHabit = habits[selectedValue - 1];
-            _habitRepository.DeleteHabitById(selectedHabit.Id);
+            return selectedHabit;
         }
         else
         {
             Console.WriteLine("Invalid selection.");
+            return null;
         }
     }
 

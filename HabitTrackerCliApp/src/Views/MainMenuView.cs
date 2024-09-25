@@ -30,13 +30,16 @@ public class MainMenuView
                     habitController.CreateHabit();
                     break;
                 case 4:
-                    habitController.DeleteHabit();
+                    habitController.UpdateHabit();
                     break;
                 case 5:
+                    habitController.DeleteHabit();
+                    break;
+                case 6:
                     Console.WriteLine("Goodbye.");
                     break;
             }
-        } while (value != 5);
+        } while (value != 6);
 
     }
 
@@ -45,8 +48,9 @@ public class MainMenuView
         Console.WriteLine(ConsoleUtils.CreateListItem(1, "View all habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(2, "Log daily habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(3, "Add a new habit"));
-        Console.WriteLine(ConsoleUtils.CreateListItem(4, "Delete a habit"));
-        Console.WriteLine(ConsoleUtils.CreateListItem(5, "Exit"));
+        Console.WriteLine(ConsoleUtils.CreateListItem(4, "Update a habit"));
+        Console.WriteLine(ConsoleUtils.CreateListItem(5, "Delete a habit"));
+        Console.WriteLine(ConsoleUtils.CreateListItem(6, "Exit"));
         Console.Write("\nPlease select an option: ");
     }
 }
