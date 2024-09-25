@@ -13,8 +13,15 @@ public class HabitController
         _habitRepository = habitRepository;
     }
 
+    public void ViewAllHabits()
+    {
+        ConsoleUtils.DisplayHeader("HABITS");
+        PrintHabitList();
+    }
+
     public void CreateHabit()
     {
+        ConsoleUtils.DisplayHeader("CREATE HEADER");
 
         var name = UserInteractionUtils.GetTextualInputFromUser("name");
         var description = UserInteractionUtils.GetTextualInputFromUser("description");
@@ -30,5 +37,33 @@ public class HabitController
 
         _habitRepository.CreateHabit(habit);
         Console.WriteLine("Habit persisted");
+    }
+
+    public void DeleteHabit()
+    {
+        ConsoleUtils.DisplayHeader("DELETE A HABIT");
+
+        var habits = _habitRepository.GetAllHabits();
+
+        var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList) - 1;
+
+        if (selectedValue > 0 && selectedValue <= habits.Count)
+        {
+            var selectedHabit = habits[selectedValue - 1];
+            _habitRepository.DeleteHabitById(selectedHabit.Id);
+        }
+        else
+        {
+            Console.WriteLine("Invalid selection.");
+        }
+    }
+
+    private void PrintHabitList()
+    {
+        var habits = _habitRepository.GetAllHabits();
+        for (var i = 0; i < habits.Count; i++)
+        {
+            Console.WriteLine(ConsoleUtils.CreateListItem(i + 1, habits[i].Name));
+        }
     }
 }

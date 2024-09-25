@@ -16,9 +16,8 @@ public class MainMenuView
         
         switch (value)
         {
-            case 0:
-                break;
             case 1:
+                habitController.ViewAllHabits();
                 break;
             case 2:
                 break;
@@ -26,16 +25,20 @@ public class MainMenuView
                 habitController.CreateHabit();
                 break;
             case 4:
+                habitController.DeleteHabit();
+                break;
+            case 5:
                 break;
         }
     }
 
-    private void DisplayOptions()
+    private static void DisplayOptions()
     {
         Console.WriteLine(ConsoleUtils.CreateListItem(1, "View all habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(2, "Log daily habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(3, "Add a new habit"));
         Console.WriteLine(ConsoleUtils.CreateListItem(4, "Delete a habit"));
+        Console.WriteLine(ConsoleUtils.CreateListItem(5, "Exit"));
         Console.Write("\nPlease select an option: ");
     }
 }
