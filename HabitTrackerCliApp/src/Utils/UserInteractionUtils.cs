@@ -15,7 +15,7 @@ public static class UserInteractionUtils
 
             if (!success)
             {
-                Console.WriteLine("Invalid input. Please choose a valid option.\n");
+                Console.WriteLine($"Invalid input. Please choose a valid option.{Environment.NewLine}");
                 displayOptions();
             }
         } while (!success);

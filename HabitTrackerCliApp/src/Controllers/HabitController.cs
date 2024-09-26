@@ -19,7 +19,50 @@ public class HabitController
         ConsoleUtils.DisplayHeader("HABITS");
         PrintHabitList();
         
-        Console.WriteLine("\nChoose a habit to view more information: ");
+        Console.WriteLine("\nSelect a habit number: ");
+
+        Habit? selectedHabit;
+        do
+        {
+            selectedHabit = GetHabitFromList();
+
+            if (selectedHabit == null)
+            {
+                Console.WriteLine(ERROR_MESSAGE);
+            }
+        } while (selectedHabit == null);
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("Select an option:");
+        
+        var value = -1;
+        do
+        {
+            value = UserInteractionUtils.GetIntFromUser(PrintHabitOptionsList);
+
+            switch (value)
+            {
+                case 1:
+                    Console.WriteLine("Showing details for habit");
+                    return;
+                case 2:
+                    var newName = UserInteractionUtils.GetTextualInputFromUser("new name");
+                    var newDescription = UserInteractionUtils.GetTextualInputFromUser("new description");
+
+                    _habitRepository.UpdateHabitById(selectedHabit.Id, new Habit()
+                    {
+                        Name = newName,
+                        Description = newDescription
+                    });
+                    return;
+                case 3:
+                    _habitRepository.DeleteHabitById(selectedHabit.Id);
+                    return;
+                case 4:
+                    Console.WriteLine("Goodbye.");
+                    return;
+            }
+        } while (value != 6);
     }
 
     public void CreateHabit()
@@ -88,7 +131,7 @@ public class HabitController
     {
         var habits = _habitRepository.GetAllHabits();
 
-        var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList) - 1;
+        var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList);
 
         if (selectedValue > 0 && selectedValue <= habits.Count)
         {
@@ -108,6 +151,15 @@ public class HabitController
         for (var i = 0; i < habits.Count; i++)
         {
             Console.WriteLine(ConsoleUtils.CreateListItem(i + 1, habits[i].Name));
+        }
+    }
+
+    private void PrintHabitOptionsList()
+    {
+        string[] options = ["Show details", "Update", "Delete", "Go back to main menu"];
+        for (var i = 0; i < options.Length; i++)
+        {
+            Console.WriteLine(ConsoleUtils.CreateListItem(i + 1, options[i]));
         }
     }
 }
