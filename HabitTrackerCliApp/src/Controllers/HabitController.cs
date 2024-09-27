@@ -6,11 +6,15 @@ namespace HabitTrackerCliApp.Controllers;
 
 public class HabitController
 {
+    private readonly HabitLogController _habitLogController;
     private readonly HabitRepository _habitRepository;
     private const string ERROR_MESSAGE = "Invalid selection. Please choose a valid habit";
 
-    public HabitController(HabitRepository habitRepository)
+    public HabitController(
+        HabitLogController habitLogController,
+        HabitRepository habitRepository)
     {
+        _habitLogController = habitLogController;
         _habitRepository = habitRepository;
     }
 
@@ -93,6 +97,18 @@ public class HabitController
             }
            
         } while (operation != 4);
+    }
+
+    public void LogHabits()
+    {
+        Console.Clear();
+
+        var habits = _habitRepository.GetAllHabits();
+
+        foreach (var habit in habits)
+        {
+            _habitLogController.CreateHabitLog(habit);
+        }
     }
 
     private Habit? SelectHabit(string headerMessage)

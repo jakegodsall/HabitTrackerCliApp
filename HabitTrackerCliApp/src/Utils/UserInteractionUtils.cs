@@ -48,7 +48,7 @@ public static class UserInteractionUtils
         string input;
         do
         {
-            Console.Write(question + "(y/n)");
+            Console.Write(question + " (y/n)");
 
             input = Console.ReadLine();
 

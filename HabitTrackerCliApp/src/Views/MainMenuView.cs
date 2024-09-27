@@ -9,8 +9,8 @@ public class MainMenuView
 {
     public void Run()
     {
-
-        var habitController = new HabitController(new HabitRepository("Data Source=habits.db"));
+        var dataString = "Data Source=habits.db";
+        var habitController = new HabitController(new HabitLogController(new HabitLogRepository(dataString)), new HabitRepository(dataString));
 
         var value = -1;
         do
@@ -26,16 +26,11 @@ public class MainMenuView
                     habitController.ViewAllHabits();
                     break;
                 case 2:
+                    habitController.LogHabits();
                     break;
                 case 3:
                     habitController.CreateHabit();
                     break;
-                // case 4:
-                //     habitController.UpdateHabit();
-                //     break;
-                // case 5:
-                //     habitController.DeleteHabit();
-                //     break;
                 case 6:
                     Console.WriteLine("Goodbye.");
                     break;
@@ -49,8 +44,6 @@ public class MainMenuView
         Console.WriteLine(ConsoleUtils.CreateListItem(1, "View all habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(2, "Log daily habits"));
         Console.WriteLine(ConsoleUtils.CreateListItem(3, "Add a new habit"));
-        Console.WriteLine(ConsoleUtils.CreateListItem(4, "Update a habit"));
-        Console.WriteLine(ConsoleUtils.CreateListItem(5, "Delete a habit"));
         Console.WriteLine(ConsoleUtils.CreateListItem(6, "Exit"));
         Console.Write("\nPlease select an option: ");
     }
