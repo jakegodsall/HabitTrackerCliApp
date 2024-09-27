@@ -41,4 +41,26 @@ public static class UserInteractionUtils
 
         return input;
     }
+
+    public static bool GetBoolInputFromUser(string question)
+    {
+        var success = false;
+        string input;
+        do
+        {
+            Console.Write(question + "(y/n)");
+
+            input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "y":
+                case "Y":
+                    return true;
+                case "N":
+                case "n":
+                    return false;
+            }
+        } while (true);
+    }
 }
