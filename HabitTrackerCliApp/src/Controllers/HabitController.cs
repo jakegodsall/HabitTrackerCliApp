@@ -18,21 +18,12 @@ public class HabitController
     {
         ConsoleUtils.DisplayHeader("HABITS");
         PrintHabitList();
+
+        var selectedHabit = SelectHabit("Select a habit number: ");
         
-        Console.WriteLine("\nSelect a habit number: ");
-
-        Habit? selectedHabit;
-        do
-        {
-            selectedHabit = GetHabitFromList();
-
-            if (selectedHabit == null)
-            {
-                Console.WriteLine(ERROR_MESSAGE);
-            }
-        } while (selectedHabit == null);
-
         Console.WriteLine(Environment.NewLine);
+        
+        Console.WriteLine("Selected Habit: " + selectedHabit.Name);
         Console.WriteLine("Select an option:");
         
         var value = -1;
@@ -143,6 +134,24 @@ public class HabitController
             Console.WriteLine("Invalid selection.");
             return null;
         }
+    }
+
+    private Habit? SelectHabit(string headerMessage)
+    {
+        ConsoleUtils.DisplayHeader(headerMessage);
+
+        Habit? selectedHabit;
+        do
+        {
+            selectedHabit = GetHabitFromList();
+
+            if (selectedHabit == null)
+            {
+                Console.WriteLine(ERROR_MESSAGE);
+            }
+        } while (selectedHabit == null);
+
+        return selectedHabit;
     }
 
     private void PrintHabitList()
