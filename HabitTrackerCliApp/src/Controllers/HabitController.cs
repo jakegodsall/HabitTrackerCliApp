@@ -29,6 +29,7 @@ public class HabitController
 
     public void CreateHabit()
     {
+        Console.Clear();
         ConsoleUtils.DisplayHeader("CREATE HABIT");
 
         var name = UserInteractionUtils.GetTextualInputFromUser("name");

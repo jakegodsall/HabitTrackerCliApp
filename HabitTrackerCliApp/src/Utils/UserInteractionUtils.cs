@@ -29,7 +29,7 @@ public static class UserInteractionUtils
         string input;
         do
         {
-            Console.WriteLine($"Enter a value for {field}:");
+            Console.Write($"Enter a value for {field}: ");
             input = Console.ReadLine();
             success = !string.IsNullOrEmpty(input);
 
