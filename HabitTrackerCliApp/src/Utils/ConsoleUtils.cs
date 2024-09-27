@@ -4,7 +4,8 @@ public static class ConsoleUtils
 {
     public static string CreateListItem(int index, string value)
     {
-        return $"\u2192 {index}. {value}.";
+        if (!StringUtils.IsFinalCharacterFullStop(value)) value += ".";
+        return $"\u2192 {index}. {value}";
     }
     
     public static void DisplayHeader(string title)

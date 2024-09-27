@@ -6,4 +6,10 @@ public class StringUtils
     {
         return char.ToUpper(s[0]) + s.Substring(1);
     }
+
+    public static bool IsFinalCharacterFullStop(string s)
+    {
+        if (string.IsNullOrEmpty(s)) return false;
+        return s[^1] == '.';
+    }
 }

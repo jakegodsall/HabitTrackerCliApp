@@ -27,9 +27,9 @@ public class MainMenuView
                     break;
                 case 2:
                     break;
-                // case 3:
-                //     habitController.CreateHabit();
-                //     break;
+                case 3:
+                    habitController.CreateHabit();
+                    break;
                 // case 4:
                 //     habitController.UpdateHabit();
                 //     break;
