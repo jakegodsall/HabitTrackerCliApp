@@ -16,12 +16,12 @@ public class HabitController
 
     public void ViewAllHabits()
     {
+        Console.Clear();
         ConsoleUtils.DisplayHeader("HABITS");
-        PrintHabitList();
 
-        var selectedHabit = SelectHabit("Select a habit number: ");
+        var selectedHabit = SelectHabit("");
         
-        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine(Environment.NewLine); 
         
         PerformOperationOnHabit(selectedHabit);
         
@@ -65,7 +65,9 @@ public class HabitController
 
     private void PerformOperationOnHabit(Habit habit)
     {
-        Console.WriteLine("Select an option");
+        Console.Clear();
+        ConsoleUtils.DisplayHeader($"HABIT: {habit.Name}");
+        Console.WriteLine(Environment.NewLine + "Select an option");
         int operation;
         do
         {
@@ -92,32 +94,26 @@ public class HabitController
         } while (operation != 4);
     }
 
-    private Habit? GetHabitFromList()
-    {
-        var habits = _habitRepository.GetAllHabits();
-
-        var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList);
-
-        if (selectedValue > 0 && selectedValue <= habits.Count)
-        {
-            var selectedHabit = habits[selectedValue - 1];
-            return selectedHabit;
-        }
-        else
-        {
-            Console.WriteLine("Invalid selection.");
-            return null;
-        }
-    }
-
     private Habit? SelectHabit(string headerMessage)
     {
-        ConsoleUtils.DisplayHeader(headerMessage);
-
         Habit? selectedHabit;
         do
         {
-            selectedHabit = GetHabitFromList();
+            var habits = _habitRepository.GetAllHabits();
+            
+            Console.WriteLine(Environment.NewLine + "Select a habit to view options:");
+
+            var selectedValue = UserInteractionUtils.GetIntFromUser(PrintHabitList);
+
+            if (selectedValue > 0 && selectedValue <= habits.Count)
+            {
+                selectedHabit = habits[selectedValue - 1];
+            }
+            else
+            {
+                Console.WriteLine("Invalid selection.");
+                selectedHabit = null;
+            }
 
             if (selectedHabit == null)
             {

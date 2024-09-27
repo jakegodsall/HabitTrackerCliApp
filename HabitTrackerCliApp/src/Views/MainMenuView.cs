@@ -9,14 +9,15 @@ public class MainMenuView
 {
     public void Run()
     {
-        ConsoleUtils.DisplayHeader("Habit Tracker Main Menu");
-        
 
         var habitController = new HabitController(new HabitRepository("Data Source=habits.db"));
 
         var value = -1;
         do
         {
+            Console.Clear();
+            ConsoleUtils.DisplayHeader("Habit Tracker Main Menu");
+            
             value = UserInteractionUtils.GetIntFromUser(DisplayOptions);
 
             switch (value)
