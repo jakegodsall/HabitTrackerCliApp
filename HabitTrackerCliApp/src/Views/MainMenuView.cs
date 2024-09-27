@@ -26,15 +26,15 @@ public class MainMenuView
                     break;
                 case 2:
                     break;
-                case 3:
-                    habitController.CreateHabit();
-                    break;
-                case 4:
-                    habitController.UpdateHabit();
-                    break;
-                case 5:
-                    habitController.DeleteHabit();
-                    break;
+                // case 3:
+                //     habitController.CreateHabit();
+                //     break;
+                // case 4:
+                //     habitController.UpdateHabit();
+                //     break;
+                // case 5:
+                //     habitController.DeleteHabit();
+                //     break;
                 case 6:
                     Console.WriteLine("Goodbye.");
                     break;

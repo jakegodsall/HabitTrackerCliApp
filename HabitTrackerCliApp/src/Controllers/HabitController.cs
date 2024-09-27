@@ -23,37 +23,8 @@ public class HabitController
         
         Console.WriteLine(Environment.NewLine);
         
-        Console.WriteLine("Selected Habit: " + selectedHabit.Name);
-        Console.WriteLine("Select an option:");
+        PerformOperationOnHabit(selectedHabit);
         
-        var value = -1;
-        do
-        {
-            value = UserInteractionUtils.GetIntFromUser(PrintHabitOptionsList);
-
-            switch (value)
-            {
-                case 1:
-                    Console.WriteLine("Showing details for habit");
-                    return;
-                case 2:
-                    var newName = UserInteractionUtils.GetTextualInputFromUser("new name");
-                    var newDescription = UserInteractionUtils.GetTextualInputFromUser("new description");
-
-                    _habitRepository.UpdateHabitById(selectedHabit.Id, new Habit()
-                    {
-                        Name = newName,
-                        Description = newDescription
-                    });
-                    return;
-                case 3:
-                    _habitRepository.DeleteHabitById(selectedHabit.Id);
-                    return;
-                case 4:
-                    Console.WriteLine("Goodbye.");
-                    return;
-            }
-        } while (value != 6);
     }
 
     public void CreateHabit()
@@ -75,47 +46,50 @@ public class HabitController
         _habitRepository.CreateHabit(habit);
     }
 
-    public void UpdateHabit()
+    public void UpdateHabit(Habit habit)
     {
-        ConsoleUtils.DisplayHeader("UPDATE A HABIT");
-        
-        Habit? selectedHabit;
-        do
-        {
-            selectedHabit = GetHabitFromList();
-            
-            if (selectedHabit == null)
-            {
-                Console.WriteLine(ERROR_MESSAGE);
-            }
-        } while (selectedHabit == null);
-        
         var newName = UserInteractionUtils.GetTextualInputFromUser("new name");
         var newDescription = UserInteractionUtils.GetTextualInputFromUser("new description");
 
-        _habitRepository.UpdateHabitById(selectedHabit.Id, new Habit()
+        _habitRepository.UpdateHabitById(habit.Id, new Habit()
         {
             Name = newName,
             Description = newDescription
         });
     }
 
-    public void DeleteHabit()
+    public void DeleteHabit(Habit habit)
     {
-        ConsoleUtils.DisplayHeader("DELETE A HABIT");
-        
-        Habit? selectedHabit;
+        _habitRepository.DeleteHabitById(habit.Id);
+    }
+
+    private void PerformOperationOnHabit(Habit habit)
+    {
+        Console.WriteLine("Select an option");
+        int operation;
         do
         {
-            selectedHabit = GetHabitFromList();
+            operation = UserInteractionUtils.GetIntFromUser(PrintHabitOptionsList);
 
-            if (selectedHabit == null)
+            switch (operation)
             {
-                Console.WriteLine(ERROR_MESSAGE);
+                case 1:
+                    Console.WriteLine("Showing details for habit");
+                    break;
+                case 2:
+                    UpdateHabit(habit);
+                    return;
+                case 3:
+                    DeleteHabit(habit);
+                    return;
+                case 4:
+                    return;
+                default:
+                    Console.WriteLine("Invalid option, please try again.");
+                    break;
             }
-        } while (selectedHabit == null);
-        
-        _habitRepository.DeleteHabitById(selectedHabit.Id);
+           
+        } while (operation != 4);
     }
 
     private Habit? GetHabitFromList()
