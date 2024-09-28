@@ -86,8 +86,18 @@ public class HabitLogRepository
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
-        
-        
+
+        var existingHabitLog = GetHabitLogByHabitIdAndDate(habitLog.HabitId, habitLog.Date);
+
+        if (existingHabitLog == null)
+        {
+            CreateHabitLog(habitLog);
+        }
+        else
+        {
+            UpdateHabitLogById(existingHabitLog.Id, habitLog);
+
+        }
     }
 
     public HabitLog? GetHabitLogById(int id)
@@ -121,18 +131,19 @@ public class HabitLogRepository
 
     public HabitLog? GetHabitLogByHabitIdAndDate(int habitId, DateTime dateTime)
     {
-        var connection = new SqliteConnection(_connectionString);
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
         
-        var command = connection.CreateCommand();
+        using var command = connection.CreateCommand();
         command.CommandText = @"
             SELECT Id, HabitId, DidComplete, Date
             FROM HabitLogs
-            WHERE id = @id AND DATE(Date) = DATE(@date)";
+            WHERE Habitid = @habitId AND DATE(Date) = DATE(@date)";
 
-        command.Parameters.AddWithValue("@id", habitId);
+        command.Parameters.AddWithValue("@habitId", habitId);
         command.Parameters.AddWithValue("@date", dateTime);
 
-        var reader = command.ExecuteReader();
+        using var reader = command.ExecuteReader();
         if (reader.Read())
         {
             return new HabitLog(
@@ -161,6 +172,7 @@ public class HabitLogRepository
                 Date = @date
             WHERE id = @id";
 
+        command.Parameters.AddWithValue("@id", habitLog.Id);
         command.Parameters.AddWithValue("@habitId", habitLog.HabitId);
         command.Parameters.AddWithValue("@didComplete", habitLog.DidComplete);
         command.Parameters.AddWithValue("@date", habitLog.Date);

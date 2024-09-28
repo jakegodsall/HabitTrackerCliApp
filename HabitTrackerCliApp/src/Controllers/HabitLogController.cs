@@ -18,7 +18,7 @@ public class HabitLogController
         Console.WriteLine($"Habit: {habit.Name}");
         var completed = UserInteractionUtils.GetBoolInputFromUser("Did you complete this today?");
         
-        _habitLogRepository.CreateHabitLog(new HabitLog()
+        _habitLogRepository.CreateOrUpdateHabitLog(new HabitLog()
         {
             HabitId = habit.Id,
             Date = DateTime.Now
