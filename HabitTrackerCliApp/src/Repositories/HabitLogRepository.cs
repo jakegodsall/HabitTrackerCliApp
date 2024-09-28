@@ -72,15 +72,22 @@ public class HabitLogRepository
             
         var command = connection.CreateCommand();
         command.CommandText = @"
-                INSERT INTO HabitLogs (Id, HabitId, DidComplete, Date)
-                VALUES (@id, @habitId, @didComplete, @date);";
+                INSERT INTO HabitLogs (HabitId, DidComplete, Date)
+                VALUES (@habitId, @didComplete, @date);";
 
-        command.Parameters.AddWithValue("@id", habitLog.Id);
         command.Parameters.AddWithValue("@habitId", habitLog.HabitId);
         command.Parameters.AddWithValue("@didComplete", habitLog.DidComplete);
         command.Parameters.AddWithValue("@date", habitLog.Date);
 
         command.ExecuteNonQuery();
+    }
+
+    public void CreateOrUpdateHabitLog(HabitLog habitLog)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        
+        
     }
 
     public HabitLog? GetHabitLogById(int id)
@@ -97,6 +104,35 @@ public class HabitLogRepository
         command.Parameters.AddWithValue("@id", id);
 
         using var reader = command.ExecuteReader();
+        if (reader.Read())
+        {
+            return new HabitLog(
+                reader.GetInt32(0),
+                reader.GetInt32(1),
+                reader.GetBoolean(2),
+                reader.GetDateTime(3)
+            );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public HabitLog? GetHabitLogByHabitIdAndDate(int habitId, DateTime dateTime)
+    {
+        var connection = new SqliteConnection(_connectionString);
+        
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+            SELECT Id, HabitId, DidComplete, Date
+            FROM HabitLogs
+            WHERE id = @id AND DATE(Date) = DATE(@date)";
+
+        command.Parameters.AddWithValue("@id", habitId);
+        command.Parameters.AddWithValue("@date", dateTime);
+
+        var reader = command.ExecuteReader();
         if (reader.Read())
         {
             return new HabitLog(
