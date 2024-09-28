@@ -24,4 +24,9 @@ public class HabitLogController
             Date = DateTime.Now
         });
     }
+
+    public int CountHabitLogsByHabitId(int habitId)
+    {
+        return _habitLogRepository.CountHabitLogsByHabitId(habitId);
+    }
 }

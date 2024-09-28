@@ -1,3 +1,4 @@
+using System.Data;
 using HabitTrackerCliApp.Models;
 using HabitTrackerCliApp.Repositories;
 using HabitTrackerCliApp.Utils;
@@ -29,6 +30,33 @@ public class HabitController
         
         PerformOperationOnHabit(selectedHabit);
         
+    }
+
+    public void ShowHabitDetails(Habit habit)
+    {
+        
+        
+        Console.Clear();
+        ConsoleUtils.DisplayHeader($"HABIT: {habit.Name}");
+        Console.WriteLine(Environment.NewLine);
+            
+        Console.WriteLine("Description:");
+        Console.WriteLine(habit.Description);
+        
+        Console.WriteLine("Total Days Tracked: ");
+        Console.WriteLine(_habitLogController.CountHabitLogsByHabitId(habit.Id));
+        
+        Console.WriteLine("Streak: ");
+        
+        Console.WriteLine("Longest Streak: ");
+        
+        Console.WriteLine("Tracking since: ");
+
+        Console.WriteLine("Success %: ");
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("Press any key to go back to the previous menu.");
+        Console.ReadKey();
     }
 
     public void CreateHabit()
@@ -82,6 +110,7 @@ public class HabitController
             {
                 case 1:
                     Console.WriteLine("Showing details for habit");
+                    ShowHabitDetails(habit);
                     break;
                 case 2:
                     UpdateHabit(habit);

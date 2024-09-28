@@ -194,4 +194,21 @@ public class HabitLogRepository
 
         return linesAffected > 0;
     }
+    
+    // Summary methods
+
+    public int CountHabitLogsByHabitId(int habitId)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = @"SELECT COUNT(*) FROM HabitLogs WHERE HabitId = @habitId";
+
+        command.Parameters.AddWithValue("@habitId", habitId);
+
+        var result = command.ExecuteScalar();
+
+        return result != null ? Convert.ToInt32(result) : 0;
+    }
 }
