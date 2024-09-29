@@ -78,4 +78,81 @@ public class HabitLogController
 
         return streak;
     }
+
+    public int CalculateLongestStreakByHabitId(int habitId)
+    {
+        var habitLogs = _habitLogRepository.GetAllHabitLogsByHabitId(habitId);
+
+        // If no logs exist, return 0
+        if (habitLogs.Count == 0) return 0;
+    
+        // Sort the logs by date in ascending order
+        var sortedLogs = habitLogs.OrderBy(log => log.Date).ToList();
+
+        var longestStreak = 0;
+        var currentStreak = 0;
+        DateTime? previousDate = null;
+
+        // Iterate through the logs
+        foreach (var log in sortedLogs)
+        {
+            if (log.DidComplete)
+            {
+                if (previousDate == null)
+                {
+                    // If this is the first log, start the streak
+                    currentStreak = 1;
+                }
+                else
+                {
+                    // Check if this date is exactly one day after the previous log
+                    if (log.Date.Date == previousDate.Value.AddDays(1))
+                    {
+                        currentStreak++;
+                    }
+                    else
+                    {
+                        // If there's a gap, compare and reset the streak
+                        longestStreak = Math.Max(longestStreak, currentStreak);
+                        currentStreak = 1; // Start a new streak
+                    }
+                }
+            
+                // Update the previous date
+                previousDate = log.Date.Date;
+            }
+            else
+            {
+                // If DidComplete is false, compare and reset the streak
+                longestStreak = Math.Max(longestStreak, currentStreak);
+                currentStreak = 0; // Reset streak
+                previousDate = null;  // Reset previous date
+            }
+        }
+
+        // Check the last streak
+        longestStreak = Math.Max(longestStreak, currentStreak);
+
+        return longestStreak;
+    }
+    
+    public DateTime GetDateOfFirstHabitLogByHabitId(int habitId)
+    {
+        var logs = _habitLogRepository.GetAllHabitLogsByHabitId(habitId);
+        var sortedLogs = logs.OrderBy(log => log.Date).ToList();
+        return sortedLogs.First().Date;
+    }
+
+    public double CalculateProportionOfSuccessByHabitId(int habitId)
+    {
+        var logs = _habitLogRepository.GetAllHabitLogsByHabitId(habitId);
+        
+        // account for empty logs
+        if (logs.Count == 0) return 0;
+        
+        var success = logs.Count(log => log.DidComplete);
+        var total = logs.Count;
+
+        return (double)success / total * 100;
+    }
 }

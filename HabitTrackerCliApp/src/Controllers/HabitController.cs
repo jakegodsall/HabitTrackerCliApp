@@ -50,10 +50,13 @@ public class HabitController
         Console.WriteLine(_habitLogController.CalculateCurrentStreakByHabitId(habit.Id));
         
         Console.WriteLine("Longest Streak: ");
+        Console.WriteLine(_habitLogController.CalculateLongestStreakByHabitId(habit.Id));
         
         Console.WriteLine("Tracking since: ");
+        Console.WriteLine(_habitLogController.GetDateOfFirstHabitLogByHabitId(habit.Id).ToString("D"));
 
-        Console.WriteLine("Success %: ");
+        Console.WriteLine("Success: ");
+        Console.WriteLine(StringUtils.FormatDoubleToPercentageString(_habitLogController.CalculateProportionOfSuccessByHabitId(habit.Id)));
 
         Console.WriteLine(Environment.NewLine);
         Console.WriteLine("Press any key to go back to the previous menu.");
