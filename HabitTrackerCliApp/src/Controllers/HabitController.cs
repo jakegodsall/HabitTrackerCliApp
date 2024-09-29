@@ -46,7 +46,8 @@ public class HabitController
         Console.WriteLine("Total Days Tracked: ");
         Console.WriteLine(_habitLogController.CountHabitLogsByHabitId(habit.Id));
         
-        Console.WriteLine("Streak: ");
+        Console.WriteLine("Current Streak: ");
+        Console.WriteLine(_habitLogController.CalculateCurrentStreakByHabitId(habit.Id));
         
         Console.WriteLine("Longest Streak: ");
         
