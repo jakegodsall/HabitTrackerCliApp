@@ -172,7 +172,7 @@ public class HabitLogRepository
                 Date = @date
             WHERE id = @id";
 
-        command.Parameters.AddWithValue("@id", habitLog.Id);
+        command.Parameters.AddWithValue("@id", id);
         command.Parameters.AddWithValue("@habitId", habitLog.HabitId);
         command.Parameters.AddWithValue("@didComplete", habitLog.DidComplete);
         command.Parameters.AddWithValue("@date", habitLog.Date);

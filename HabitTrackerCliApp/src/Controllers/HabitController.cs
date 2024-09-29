@@ -9,7 +9,7 @@ public class HabitController
 {
     private readonly HabitLogController _habitLogController;
     private readonly HabitRepository _habitRepository;
-    private const string ERROR_MESSAGE = "Invalid selection. Please choose a valid habit";
+    private const string ErrorMessage = "Invalid selection. Please choose a valid habit";
 
     public HabitController(
         HabitLogController habitLogController,
@@ -163,7 +163,7 @@ public class HabitController
 
             if (selectedHabit == null)
             {
-                Console.WriteLine(ERROR_MESSAGE);
+                Console.WriteLine(ErrorMessage);
             }
         } while (selectedHabit == null);
 

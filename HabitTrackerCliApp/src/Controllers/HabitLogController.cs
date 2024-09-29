@@ -21,7 +21,8 @@ public class HabitLogController
         _habitLogRepository.CreateOrUpdateHabitLog(new HabitLog()
         {
             HabitId = habit.Id,
-            Date = DateTime.Now
+            Date = DateTime.Now,
+            DidComplete = completed
         });
     }
 
