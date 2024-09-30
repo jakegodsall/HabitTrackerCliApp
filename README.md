@@ -5,6 +5,7 @@ The project is mostly for practice as I learn C#, but anyone is welcome to use i
 
 ## Features
 - View all habits: Display a list of all tracked habits.
+- View habit details: Display summary statistics for a specified habit (current streak, longest streak, % success, etc).
 - Log daily habits: Record whether you completed each habit for the day.
 - Add a new habit: Add a habit to your list of daily habits.
 - Delete a habit: Remove a habit from your list.
